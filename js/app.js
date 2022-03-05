@@ -76,7 +76,6 @@ const getDevelopers = () => {
                     <th>${ index + 1 }</th>
                     <th>${ data.name }</th>
                     <th>${ data.age }</th>
-                    <th>${ data.skill }</th>
                     <th>${ data.location }</th>
                     <th>${ data.income }</th>
                     <th>${ data.gender }</th>
@@ -85,7 +84,7 @@ const getDevelopers = () => {
                     </th>
                     <th>
                         <a href="#" class="btn btn-primary btn-sm" onclick="dataview( ${ data.id })" data-bs-toggle="modal" data-bs-target="#viewdevs"><i class="fa fa-eye"></i></a>
-                        <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editdevs"><i class="fa fa-edit"></i></a>
+                        <a href="#" class="btn btn-info btn-sm" onclick="dataedit( ${ data.id })" data-bs-toggle="modal" data-bs-target="#editdevs"><i class="fa fa-edit"></i></a>
                         <a href="#" class="btn btn-danger btn-sm" onclick="datadelete( ${ data.id })" data-bs-toggle="modal" data-bs-target="#deletedevs"><i class="fa fa-trash"></i></a>
                     </th>
                 </tr>
@@ -113,11 +112,66 @@ const dataview = ( id ) => {
     })
 }
 
-// // devs delete
-// const datadelete = (id) => {
+// devs delete
+const delbtn = document.querySelector(`#dconfirm`);
+const datadelete = (id) => {
 
-//         axios.delete(`https://my-json-server.typicode.com/ismailhaque/ass-19/developer/${ id }`).then( res => {
-//             getDevelopers();
-//         })
+    delbtn.setAttribute(`delId`, id)
+
+}
+
+delbtn.addEventListener(`click`, function () {
+    
+    let get_id = this.getAttribute(`delId`);
+
+    axios.delete(`https://my-json-server.typicode.com/ismailhaque/ass-19/developer/${ get_id }`).then( res => {
+        getDevelopers();
+    })
+})
+
+// edit devs
+const edit_devs = document.querySelector(`#edit_devs`);
+
+function dataedit(id) {
+
+    // form elements get
+
+    let name = document.querySelector(`#ename`);
+    let age = document.querySelector(`#eage`);
+    let location = document.querySelector(`#elocation`);
+    let salary = document.querySelector(`#esalary`);
+    let skill = document.querySelector(`#eskills`);
+    let gender = document.querySelector(`#egender`);
+    let photo = document.querySelector(`#ephoto`);
+    let img = document.querySelector(`#eimg`);
+    
+
+    axios.get(`https://my-json-server.typicode.com/ismailhaque/ass-19/developer/${id}`).then(res => {
+
+        name.value = res.data.name;
+        age.value = res.data.age;
+        location.value = res.data.location;
+        salary.value = res.data.income;
+        gender.value = res.data.gender;
+        photo.value = res.data.image;
+        skill.value = res.data.skill;
+        img.setAttribute(`src`, res.data.image);
+    })
+    edit_devs.addEventListener(`submit`, function(e){
+        e.preventDefault();
+    axios.put(`https://my-json-server.typicode.com/ismailhaque/ass-19/developer/${id}`, {
+
+        id      : "",
+        name    : name.value,
+        age     : age.value,
+        skill   : skill.value,
+        location: location.value,
+        income  : salary.value,
+        gender  : gender.value,
+        image   : photo.value
         
-// }
+    }).then(res => {
+        getDevelopers();
+    })
+})
+}
