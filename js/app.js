@@ -8,7 +8,7 @@ function loadskills () {
         
         let skill_list = '';
         skills.data.map(data => {
-            skill_list += `<option value="${data.id}">${data.skill}</option>`;
+            skill_list += `<option value="${data.skill}">${data.skill}</option>`;
         });
         skill.insertAdjacentHTML(`beforeend`, skill_list)
     });
@@ -76,6 +76,7 @@ const getDevelopers = () => {
                     <th>${ index + 1 }</th>
                     <th>${ data.name }</th>
                     <th>${ data.age }</th>
+                    <th>${ data.skill }</th>
                     <th>${ data.location }</th>
                     <th>${ data.income }</th>
                     <th>${ data.gender }</th>
